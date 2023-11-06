@@ -30,13 +30,15 @@ sensor:
       - 0x0A
       - $channel_01_sensor
       - 0x01
-    value_type: U_WORD
+    value_type: U_DWORD
     unit_of_measurement: "%"
     accuracy_decimals: 1
     device_class: battery
     filters:
-      - multiply: 10 
-
+      - lambda: !lambda |-
+          # CRC is also included so has to be removed
+          x >> 16;
+          return x*10;
 # ----------- Binary ----------- #
 binary_sensor:
   - platform:               modbus_controller
